@@ -31,7 +31,10 @@ include("sql.php");
     <h1>Wanna Be A Part Of My World?</h1>
     USERNAME: <input type="text" name= "username" required><br>
     PASSWORD:<input type="password" name= "password" required><br>
-    <button type="submit" name="submit">Enter</button>
+    <button type="submit" name="submit">Enter</button><br>
+    Already Part Of My World? 
+    <a href="login.php">Login</a>
     </form>
+    
 </body>
 </html>

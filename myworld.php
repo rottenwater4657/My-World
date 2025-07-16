@@ -12,6 +12,6 @@
    $user_id = $_SESSION['user_id'];
    
    ?>
-       <h2>Welcome, <?php echo htmlspecialchars($username); ?>!</h2>
+       <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
 </body>
 </html>

@@ -1,5 +1,7 @@
 <?php
+session_start();
 include("sql.php");
+
  if (isset($_POST['submit']))
 {
    $conn= conntodb();
@@ -18,9 +20,10 @@ include("sql.php");
     if ($result && mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
 
-        if (password_verify($password, $row['password'])) {
-           echo "loading...";
+        if (password_verify($pass, $row['password'])) {
+           
            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['username'] = $row['username'];
             header("Location: myworld.php");
 
             exit();
@@ -50,7 +53,7 @@ include("sql.php");
      <h1>Welcome To My World</h1>
     USERNAME: <input type="text" name= "username" required><br>
     PASSWORD:<input type="password" name= "password" required><br>
-    <button type="submit" name="submit">Enter</button>
+    <button type="submit" name="submit">Enter</button><br>
     </form>
 </body>
 </html>
