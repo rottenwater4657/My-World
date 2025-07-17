@@ -9,9 +9,26 @@
     <?php 
    include("sql.php");
    session_start();
+   $conn=conntodb();
    $user_id = $_SESSION['user_id'];
-   
+  //initialization
+   if (!isset($_SESSION['day'])) {
+    $_SESSION['day'] = 1;
+}
+ if(isset($_POST['increment']))
+ {
+    $_SESSION['day']++;
+ }
+if(isset($_POST['decrement']))
+ {
+    $_SESSION['day']--;
+ }
    ?>
        <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
-</body>
+<form method="POST">
+       <h1>Day <?php echo $_SESSION['day'] ?></h1><datalist></datalist>
+       <button type="submit" name="increment">Increment</button>
+        <button type="submit" name="decrement">Decrement</button>
+</form> 
+    </body>
 </html>
