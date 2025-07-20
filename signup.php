@@ -14,9 +14,12 @@ include("sql.php");
     if(  mysqli_query($conn,$sql))
     {
      echo   "user is now registered";
+       $id = mysqli_insert_id($conn);//gets the id of registered user
+     $sql2="INSERT INTO diary(user_id,day)
+           VALUES('$id',0)";
+           mysqli_query($conn, $sql2);
+
     }
- 
-         
 }
 ?>
 <!DOCTYPE html>
