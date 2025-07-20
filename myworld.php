@@ -9,35 +9,58 @@
     <?php 
    include("sql.php");
    session_start();
+   //initialization, back to zero when entering website
+if (!isset($_POST['increment']) &&
+    !isset($_POST['decrement']) &&
+    !isset($_POST['set_day']) &&
+    !isset($_POST['submit'])) {
+    $_SESSION['day'] = 0;
+}
    $conn=conntodb();
    $user_id = $_SESSION['user_id'];
-  //initialization 
-   if (!isset($_SESSION['day'])) {
-    $_SESSION['day'] = 1;
-}
+    
+       $sql="SELECT MAX(day) AS largest_day 
+FROM diary 
+WHERE user_id = $user_id";
+$res=mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($res);
+
+  
  if(isset($_POST['increment']))
  {
+    if( $_SESSION['day']< $row['largest_day'])
+    {
     $_SESSION['day']++;
+    }
  }
 if(isset($_POST['decrement']))
  {
+    if( $_SESSION['day']>0)
+    {
     $_SESSION['day']--;
+    }
  }
  if (isset($_POST['set_day'])) {
+     if($_POST['day_value']>=0 && $_POST['day_value']<=$row['largest_day'])
+     {
     $newDay = $_POST['day_value'];
     $_SESSION['day'] = $newDay;
+     }
 }
    ?>
        <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
 <div name= "view"> <form method="POST">
        <h1>Day <?php echo $_SESSION['day'] ?></h1>
       <?php  
+      if($_SESSION['day']>0 && $_SESSION['day']<=$row['largest_day'] )
+      {
       $sql1="SELECT content 
       FROM diary 
 WHERE user_id = $user_id AND day =".$_SESSION['day'];//'day' breaks the query
 $res1=mysqli_query($conn, $sql1);
 $row1 = mysqli_fetch_assoc($res1);
     echo $row1['content'];
+      }
     ?>
     <br>
        <button type="submit" name="increment">Increment</button>
@@ -53,13 +76,7 @@ $row1 = mysqli_fetch_assoc($res1);
 <div name ="write">
     <form method="POST">
         <br>
-       <?php  
-       $sql="SELECT MAX(day) AS largest_day 
-FROM diary 
-WHERE user_id = $user_id";
-$res=mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($res);
-?>
+      
    <h1><?php echo "Day: " . $row['largest_day']+1;?></h1>
    <?php if(isset($_POST['submit']))
     {
@@ -69,6 +86,8 @@ $row = mysqli_fetch_assoc($res);
       $sql2="INSERT INTO diary(day,content,user_id)
            VALUES('$day','$content','$user_id')";
            mysqli_query($conn, $sql2);
+          header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
     }
    
 ?>
