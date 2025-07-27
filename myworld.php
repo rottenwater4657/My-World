@@ -86,7 +86,7 @@ $row1 = mysqli_fetch_assoc($res1);
       $sql2="INSERT INTO diary(day,content,user_id)
            VALUES('$day','$content','$user_id')";
            mysqli_query($conn, $sql2);
-          header("Location: " . $_SERVER['PHP_SELF']);
+          header("Location: " . $_SERVER['PHP_SELF']);//refresh
     exit();
     }
    
@@ -96,5 +96,15 @@ $row1 = mysqli_fetch_assoc($res1);
  <button type="submit" name="submit">Submit</button>
     </form>
 </div>
+<form method ="POST">
+<label>watch list </label>
+<button type="submit" name="watch">watchlist</button>
+</form>
+<?php
+if(isset($_POST['watch']))
+{
+    header("location:watchlist.php");
+}
+?>
     </body>
 </html>
